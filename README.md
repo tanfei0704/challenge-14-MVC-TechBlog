@@ -25,7 +25,7 @@ npm i
 
  Before you run the code, please change scripts:{start: } to 'node server.js' in the package.json file and change your database login credentials in the .env file.
 
- It is highly encouraged to install [Insomnia](https://insomnia.rest/), [MySQL](https://www.mysql.com/products/community/) and [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) for RESTful API and Database functionalities to work.
+ It is highly encouraged to install [Insomnia](https://insomnia.rest/) for RESTful API and Database functionalities to work.
 
 ## Acceptance Criteria
 ```md
