@@ -7,7 +7,7 @@ This Tech Blog is a CMS style project utilising the MVC structure, routes, SQL a
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
-- [Acceptance](#acceptance creteria)
+- [Acceptance Criteria](#acceptance)
 - [License](#license)
 
 
@@ -27,7 +27,7 @@ npm i
 
  It is highly encouraged to install [Insomnia](https://insomnia.rest/), [MySQL](https://www.mysql.com/products/community/) and [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) for RESTful API and Database functionalities to work.
 
-## Acceptance Creteria
+## Acceptance Criteria
 ```md
 GIVEN a CMS-style blog site
 WHEN I visit the site for the first time
@@ -67,7 +67,8 @@ THEN I am able to view posts and comments but I am prompted to log in again befo
 ## Usage
 
 The project should look like this:
-
+![screenshot](./public/assets/Screenshot%202023-10-29%20at%2011.10.57 PM.png);
+![screenshot](./public/assets/Screenshot%202023-10-29%20at%2011.12.38 PM.png)
 
 
 ## License
