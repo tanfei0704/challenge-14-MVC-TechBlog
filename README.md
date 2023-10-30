@@ -73,7 +73,6 @@ The project should look like this:
 
 ## License
 
-Copyright 2021 © Leon Hsu [leonhsu95](https://github.com/leonhsu95). All rights reserved.
 Licensed under the [MIT](https://opensource.org/licenses/MIT).
 
 
