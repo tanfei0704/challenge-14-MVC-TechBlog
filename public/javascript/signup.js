@@ -10,7 +10,9 @@ async function signupFormHandler(event) {
                 username,
                 password
             }),
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 
+                'Content-Type': 'application/json' 
+            }
         });
         if (response.ok) {
             console.log('success');
