@@ -15,12 +15,12 @@
             <nav class"nav">
                     <a class="link" href="/">Home</a>
                     <a class="link" href="/dashboard">Dashboard</a>
-                    {{#if loggedIn}}
-                    <a class="link" href="/" id="logout">Logout</a>
+                    {{#if logged_In}}
+                    <button class="link" id="logout">logout</button>
                     {{else}}
                     <a class="link" href="/login">Login</a>
                     {{/if}}
-                </nav>          
+              </nav>          
           </div>
 
           <h1 class="app-title"><i class="fab "></i>MVC Tech Blog</h1>

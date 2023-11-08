@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 
         const posts = dbPostData.map(post => post.get({ plain: true }));
         console.log(posts);
-        res.render('homepage', { posts, loggedIn: req.session.loggedIn });
+        res.render('homepage', { posts, logged_In:req.session.logged_In });
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
@@ -34,8 +34,8 @@ router.get('/', async (req, res) => {
 
 // Endpoint: http://localhost:3001/login
 router.get('/login', (req, res) => {
-    if (req.session.loggedIn) {
-        res.redirect('/');
+    if (req.session.logged_In) {
+        res.redirect('/dashboard');
         return;
     }
     res.render('login');
