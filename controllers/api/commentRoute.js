@@ -23,7 +23,7 @@ router.get('/', async(req, res) => {
         );
         res.render('comment',{
             comments,
-        loggedIn:req.session.loggedIn,
+        logged_in:req.session.logged_in,
         });
     } catch(err){
         console.log(err);
@@ -31,18 +31,6 @@ router.get('/', async(req, res) => {
     }
 });
 
-// end point: http://localhost:3001/api/comments/:id
-router.get('/:id', async(req, res) => {
-    try{
-        const dbCommentData = await Comment.findByPk(req.params.id);
-        
-        const comment = dbCommentData.get({plain:true});
-        res.render('comment',{comment,loggedIn:req.session.loggedIn});
-    } catch(err){
-        console.log(err);
-        res.status(500).json(err);
-    }
-});
 
 // end point: http://localhost:3001/api/comments/
 router.post('/', withAuth, async(req, res) => {
@@ -53,7 +41,7 @@ router.post('/', withAuth, async(req, res) => {
             user_id: req.session.user_id,
         });
         req.session.save(()=>{
-            req.session.loggedIn = true;
+            req.session.logged_in = true;
             res.status(500).json(newComment);
         });   
     } catch(err){

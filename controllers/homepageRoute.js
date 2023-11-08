@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const { Post, Comment, User } = require('../models');
-const sequelize = require('../config/connection');
 
 // Endpoint: http://localhost:3001/
 router.get('/', async (req, res) => {
@@ -25,7 +24,7 @@ router.get('/', async (req, res) => {
 
         const posts = dbPostData.map(post => post.get({ plain: true }));
         console.log(posts);
-        res.render('homepage', { posts, logged_In:req.session.logged_In });
+        res.render('homepage', { posts, logged_in:req.session.logged_in });
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
@@ -34,7 +33,7 @@ router.get('/', async (req, res) => {
 
 // Endpoint: http://localhost:3001/login
 router.get('/login', (req, res) => {
-    if (req.session.logged_In) {
+    if (req.session.logged_in) {
         res.redirect('/dashboard');
         return;
     }
@@ -46,42 +45,6 @@ router.get('/signup', (req, res) => {
     res.render('signup');
 });
 
-// Endpoint: http://localhost:3001/post/:id
-router.get('/post/:id', async (req, res) => {
-    try {
-        const dbPostData = await Post.findOne({
-            where: {
-                id: req.params.id
-            },
-            attributes: ['id', 'content', 'title', 'created_at'],
-            include: [
-                {
-                    model: Comment,
-                    attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
-                    include: {
-                        model: User,
-                        attributes: ['username']
-                    }
-                },
-                {
-                    model: User,
-                    attributes: ['username']
-                }
-            ]
-        });
-
-        if (!dbPostData) {
-            res.status(404).json({ message: 'No post found with this id' });
-            return;
-        }
-
-        const post = dbPostData.get({ plain: true });
-        res.render('single-post', { post, loggedIn: req.session.loggedIn });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
-    }
-});
 
 // Endpoint: http://localhost:3001/posts-comments
 router.get('/posts-comments', async (req, res) => {
@@ -113,7 +76,7 @@ router.get('/posts-comments', async (req, res) => {
         }
 
         const post = dbPostData.get({ plain: true });
-        res.render('posts-comments', { post, loggedIn: req.session.loggedIn });
+        res.render('posts-comments', { post, logged_in: req.session.logged_in });
     } catch (err) {
         console.log(err);
         res.status(500).json(err);

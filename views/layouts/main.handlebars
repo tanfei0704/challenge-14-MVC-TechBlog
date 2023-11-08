@@ -13,12 +13,12 @@
       <header class="hero">
           <div>
             <nav class"nav">
-                    <a class="link" href="/">Home</a>
-                    <a class="link" href="/dashboard">Dashboard</a>
-                    {{#if logged_In}}
-                    <button class="link" id="logout">logout</button>
+                    <a class="link home" href="/">Home</a>
+                    <a class="link dashboard" href="/dashboard">Dashboard</a>
+                    {{#if logged_in}}
+                    <a class="link logout" href="/logout">logout</a>
                     {{else}}
-                    <a class="link" href="/login">Login</a>
+                    <a class="link login" href="/login">Login</a>
                     {{/if}}
               </nav>          
           </div>
