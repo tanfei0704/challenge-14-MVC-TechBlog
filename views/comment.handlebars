@@ -1,0 +1,31 @@
+<div class="card">
+    <div class="card">
+        <div class="card-header">
+            <h4><a class="link" href="/posts{{post.id}}">{{post.title}}</a></h4>
+            <p>Posted by {{User.username}} on {{format_date created_at}}</p>
+        </div>
+            <p class="card-body">{{post.content}}</p>
+    </div>
+        <button type="button" class="delete-post-btn btn">Delete Post</button>
+    </form>
+</div>
+
+
+{{#if loggedIn}}
+<div class="card">
+    <h3 class="card-header"></h3>
+    <form class="card-body comment-form" id="comment-form">
+
+        <label class="form-label">Comment</label>
+        <input id="comment" name="comment-body" class="form-input" />
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+{{/if}}
+
+
+
+{{#if loggedIn}}
+<script src="/javascript/comment.js"></script>
+{{/if}}

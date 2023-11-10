@@ -1,89 +1,80 @@
 const router = require('express').Router();
-const { Post, User, Comment } = require('../models');
-const withAuth = require('../utils/auth');
+const { User, Post, Comment } = require('../models');
+const auth = require('../utils/auth');
+const sequelize = require('../config/connection');
 
-// Endpoint: http://localhost:3001/dashboard/
-router.get('/', withAuth, async (req, res) => {
-    try {
-        const dbPostData = await Post.findAll({
-            where: {
-                user_id: req.session.user_id
+//user's all posts
+router.get('/', auth, (req, res)=> {
+    Post.findAll({
+        where: {
+          userId: req.session.userId,
+        },
+        attributes: ['id', 'title', 'content', 'created_at'],
+        order: [['created_at', 'DESC']],
+        include: [
+          {
+            model: Comment,
+            attributes: ['id', 'comment', 'postId', 'userId', 'created_at'],
+            include: {
+              model: User,
+              attributes: ['username'],
             },
-            attributes: [
-                'id',
-                'title',
-                'content',
-                'created_at'
-            ],
-            include: [
-                {
-                    model: Comment,
-                    attributes: ['id', 'comment_text', 'user_id', 'post_id', 'created_at'],
-                    include: {
-                        model: User,
-                        attributes: ['username']
-                    }
-                },
-                {
-                    model: User,
-                    attributes: ['username']
-                }
-            ]
-        });
-
-        const posts = dbPostData.map(post => post.get({ plain: true }));
-        res.render('dashboard', { posts});
-    } catch (err) {
+          },
+          {
+            model: User,
+            attributes: ['username'],
+          },
+        ],
+      })
+    .then((dbPostData) => {
+        const posts = dbPostData.map((post) => post.get({ plain: true }));
+        res.render('dashboard', { posts, loggedIn: true, username: req.session.username,});       
+    })
+    .catch((err) => {
         console.log(err);
         res.status(500).json(err);
-    }
+});
 });
 
-// Endpoint: http://localhost:3001/dashboard/edit/:id
-router.get('/edit/:id', withAuth, async (req, res) => {
-    try {
-        const dbPostData = await Post.findOne({
-            where: {
-                id: req.params.id
-            },
-            attributes: [
-                'id',
-                'title',
-                'content',
-                'created_at'
-            ],
-            include: [
-                {
-                    model: Comment,
-                    attributes: ['id', 'comment_text', 'user_id', 'post_id', 'created_at'],
-                    include: {
-                        model: User,
-                        attributes: ['username']
-                    }
-                },
-                {
-                    model: User,
-                    attributes: ['username']
-                }
-            ]
-        });
-
+// Get one post to edit ('dashboard/edit/:id')
+router.get('/edit/:id', auth, (req, res) => {
+    Post.findOne({
+      where: {
+        id: req.params.id,
+      },
+      attributes: ['id', 'title', 'content', 'created_at'],
+      include: [
+        {
+          model: User,
+          attributes: ['username'],
+        },
+        {
+          model: Comment,
+          attributes: ['id', 'comment', 'postId', 'userId', 'created_at'],
+          include: {
+            model: User,
+            attributes: ['username'],
+          },
+        },
+      ],
+    })
+      .then((dbPostData) => {
         if (!dbPostData) {
-            res.status(404).json({ message: 'No post found with this id' });
-            return;
+          res.status(404).json({ message: 'This id has no post.' });
+          return;
         }
-
         const post = dbPostData.get({ plain: true });
-        res.render('edit-post', { post, logged_in: true });
-    } catch (err) {
+        res.render('edit-post', { post, loggedIn: true, username: req.session.username });         
+      })
+      .catch((err) => {
         console.log(err);
         res.status(500).json(err);
-    }
+      });
+  });
+  
+//  Get new post ('/dashboard/new)
+router.get('/new', auth, (req, res) => {
+    res.render('new-post', { username: req.session.username });
 });
-
-// Endpoint: http://localhost:3001/dashboard/new
-router.get('/new', (req, res) => {
-    res.render('new-post');
-});
-
-module.exports = router;
+  
+module.exports = router; 

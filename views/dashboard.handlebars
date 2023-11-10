@@ -3,12 +3,17 @@
 <section>
   <h2>Your Posts</h2>
     {{#each posts as |post|}}
-      {{> dashboard-postinfo post}}
+      <div class="card">
+        <div class="card-header">
+          <h4><a class="link" href="/dashboard/edit/{{id}}">{{title}}</a></h4>
+        </div>
+      </div>
     {{/each}}
-
+    <button type="button" class="delete-post-btn btn">Delete Post</button>
 </section>
 {{/if}}
 
 <button type="submit" class="btn"><a class="link" href="/dashboard/new">+ New Post</a></button>
 
-<script src="/javascript/add-post.js"></script>
+<script src="/javascript/delete-post.js"></script>
+

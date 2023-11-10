@@ -1,5 +1,5 @@
 
-{{> post-info post}}
+{{> postcard post}}
 
 {{#if loggedIn}}
 <div class="card">
@@ -14,7 +14,7 @@
 </div>
 {{/if}}
 
-{{> comments post.comments}}
+{{> commentcard post.comments}}
 
 {{#if loggedIn}}
 <script src="/javascript/comment.js"></script>

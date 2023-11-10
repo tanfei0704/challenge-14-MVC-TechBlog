@@ -1,95 +1,66 @@
 const router = require('express').Router();
 const { Comment } = require('../../models');
-const withAuth = require('../../utils/auth');
+const auth = require('../../utils/auth');
 
-// end point: http://localhost:3001/api/comments/
-router.get('/', async(req, res) => {
-    try{
-        const dbCommentData = await Comment.findAll({
-        attributes: [
-            'id', 
-            'comment_text', 
-            'post_id', 
-            'user_id', 
-            'created_at'
-        ],
-        include: [{
-            model: User,
-            attributes: ['username']
-        }]
-    });
-    const comments = dbCommentData.map((comment)=>
-        comment.get({plain:true})
-        );
-        res.render('comment',{
-            comments,
-        logged_in:req.session.logged_in,
-        });
-    } catch(err){
-        console.log(err);
-        res.status(500).json(err);
-    }
+// get comments ('api/comments')
+router.get('/', async (req, res) => {
+  try{ 
+    const dbCommentData = await Comment.findAll({});
+    if (dbCommentData.length === 0) {
+      res.status(404).json({ message: "You have no comment."});
+      return;
+    };
+    res.status(200).json(dbCommentData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
+// Get all the comments from 1 post
+router.get('/:id', async (req, res) => {
+  try {
+      const commentData = await Comment.findAll({
+          where: { id: req.params.id },
+      });
+      if (commentData.length === 0) {
+          res.status(404).json({ message: `The id ${req.params.id} has no comment.` });
+          return;
+      }
+      res.status(200).json(commentData);
+  } catch (err) {
+      res.status(500).json(err);
+  }
+});
 
-// end point: http://localhost:3001/api/comments/
-router.post('/', withAuth, async(req, res) => {
-    try{
+// create comment ('/api/comments')
+router.post('/', auth, async (req, res) => {
+    const body = req.body;
+    try {
         const newComment = await Comment.create({
-            comment_text: req.body.comment_text,
-            post_id: req.body.post_id,
+            ...body,
             user_id: req.session.user_id,
         });
-        req.session.save(()=>{
-            req.session.logged_in = true;
-            res.status(500).json(newComment);
-        });   
-    } catch(err){
-        console.log(err);
+        res.status(200).json({ newComment, success: true });
+    } catch (err) {
         res.status(500).json(err);
     }
 });
 
-// end point: http://localhost:3001/api/comments/:id
-router.put('/:id', withAuth, async (req, res) => {
+// delete comment ('api/comments/:id')
+router.delete('/:id', auth, async (req, res) => {
     try {
-        const commentUpdate = await Comment.update({
-            comment_text: req.body.comment_text
-        },
-        {
-            where: {
-                id: req.params.id
-            }
+      const dbCommentData = await Comment.destroy({
+        where: {id: req.params.id},
+      });        
+      if (!dbCommentData) {
+        res.status(404).json({
+          message: `No comment is found with id = ${req.params.id}`,
         });
-        
-        if (commentUpdate[0] === 0) {
-            res.status(404).json({ message: 'No comment found with this id' });
-        } else {
-            res.status(200).json({ message: 'Comment updated successfully' });
-        }
+        return;
+      }  
+      res.status(200).json({dbCommentData, success: true});
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
-    }
-});
-
-// end point: http://localhost:3001/api/comments/:id
-router.delete('/:id', withAuth, async (req, res) => {
-    try {
-        const deletedComment = await Comment.destroy({
-            where: {
-                id: req.params.id
-            }
-        });
-
-        if (deletedComment === 0) {
-            res.status(404).json({ message: 'No comment found with this id' });
-        } else {
-            res.status(200).json({ message: 'Comment deleted successfully' });
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+      res.status(500).json(err);
     }
 });
 
