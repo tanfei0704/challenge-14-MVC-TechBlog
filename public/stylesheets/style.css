@@ -175,6 +175,13 @@ p {
     padding: 1%;
 }
 
+.card-footer {
+    color: var(--primary);
+    background-color: var(--dark);
+    padding: 1%;
+    border-radius: calc(.18rem - 1px) calc(.18rem - 1px) 0 0;
+}
+
 h4 {
     font-weight: 700;
     margin: 0;

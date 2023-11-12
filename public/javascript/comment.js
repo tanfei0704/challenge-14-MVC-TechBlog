@@ -1,4 +1,4 @@
-const post_id = document.querySelector('')
+const postId = document.querySelector('input[name="post-id"]').value;
 
 async function commentFormHandler(event) {
     event.preventDefault();
@@ -9,7 +9,7 @@ async function commentFormHandler(event) {
         const response = await fetch('/api/comments', {
             method: 'POST',
             body: JSON.stringify({
-                post_id,
+                postId,
                 comment_text
             }),
             headers: {

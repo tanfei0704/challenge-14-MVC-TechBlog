@@ -64,29 +64,33 @@ router.get('/dashboard', auth, async (req, res) => {
     }
   });
 
-// get one post 
-router.get('/post/:id'),async(req,res) => {
-  try{
+// get one post route
+router.get('/posts/:id', async (req, res) => {
+  try {
     const postData = await Post.findOne({
-      where : { id : req.params.id},
-      attributes: ['id', 'content','title','created_at'],
+      where: { id: req.params.id },
+      attributes: ['id', 'content', 'title', 'created_at'],
       include: [{
-          model: User,
-          attributes :[ 'username']
-      },],
+        model: User,
+        attributes: ['username']
+      }],
     });
-    if (postData){
-      const post = postData.get({ plain :true});
-      console.log(post);
-      res.render('single-post'),{ post, logged_in}
+
+    if (postData) {
+      const post = postData.get({ plain: true });
+      // console.log(post);
+      
+      // Corrected syntax for rendering the view
+      res.render('single-post', { post, logged_in });
     } else {
-      res.status(404).json(err);
-      return;
+      res.status(404).json({ message: 'Post not found' });
     }
   } catch (err) {
     res.status(500).json(err);
   }
-};
+});
+
+
 
 
 module.exports = router;

@@ -1,5 +1,14 @@
+<p >Please log in to leave comments</p>
 
-{{> postcard post}}
+<div class="card">
+    <div class="card-header">
+       <h4>{{title}}</h4>
+        <p>Posted by {{user.username}} on {{format_date created_at}}</p>
+    </div>
+        <p class="card-body">{{content}}</p>
+</div>
+
+<input type="hidden" name="post-id" value="{{post.id}}"/>
 
 {{#if loggedIn}}
 <div class="card">
@@ -7,15 +16,11 @@
     <form class="card-body comment-form" id="comment-form">
 
         <label class="form-label">Comment</label>
-        <input id="comment" name="comment-body" class="form-input" />
+        <input name="comment-body" class="form-input" />
 
         <button type="submit" class="btn">Submit</button>
     </form>
 </div>
 {{/if}}
 
-{{> commentcard post.comments}}
-
-{{#if loggedIn}}
 <script src="/javascript/comment.js"></script>
-{{/if}}
