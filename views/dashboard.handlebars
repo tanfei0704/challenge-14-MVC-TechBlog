@@ -3,13 +3,15 @@
 <section>
   <h2>Your Posts</h2>
     {{#each posts as |post|}}
+    <input type="hidden" name="post-id" value="{{post.id}}"/>
       <div class="card">
         <div class="card-header">
           <h4><a class="link" href="/dashboard/edit/{{id}}">{{title}}</a></h4>
         </div>
+        <button type="button" class="delete-post-btn btn">Delete Post</button>
       </div>
     {{/each}}
-    <button type="button" class="delete-post-btn btn">Delete Post</button>
+    
 </section>
 {{/if}}
 

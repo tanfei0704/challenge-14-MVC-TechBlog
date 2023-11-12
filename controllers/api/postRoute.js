@@ -18,6 +18,24 @@ router.post('/', auth, async (req, res) => {
   });
 
 //edit post Endpoint: http://localhost:3001/api/posts/:id
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const updatedPost = await Post.findOne({
+      where: {
+        id: req.params.id,
+      }, 
+    });
+    if (!updatedPost) {
+      res.status(404).json({ message: 'This id has no post' });
+      return;
+    }  
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//edit post Endpoint: http://localhost:3001/api/posts/:id
 router.put('/:id', auth, async (req, res) => {
     try {
       const updatedPost = await Post.update(
