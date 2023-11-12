@@ -66,9 +66,10 @@ THEN I am able to view posts and comments but I am prompted to log in again befo
 
 ## Usage
 
-The project should look like this:
-![screenshot](./public/assets/Screenshot%202023-10-29%20at%2011.10.57 PM.png);
-![screenshot](./public/assets/Screenshot%202023-10-29%20at%2011.12.38 PM.png)
+Please go to website as following:
+https://secure-cliffs-88853-fb1823730005.herokuapp.com/
+
+
 
 
 ## License
