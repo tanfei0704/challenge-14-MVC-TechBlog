@@ -7,14 +7,14 @@ const sequelize = require('../config/connection');
 router.get('/', auth, (req, res)=> {
     Post.findAll({
         where: {
-          userId: req.session.userId,
+          user_id: req.session.user_id,
         },
         attributes: ['id', 'title', 'content', 'created_at'],
         order: [['created_at', 'DESC']],
         include: [
           {
             model: Comment,
-            attributes: ['id', 'comment', 'postId', 'userId', 'created_at'],
+            attributes: ['id', 'comment', 'post_id', 'user_id', 'created_at'],
             include: {
               model: User,
               attributes: ['username'],
@@ -28,7 +28,7 @@ router.get('/', auth, (req, res)=> {
       })
     .then((dbPostData) => {
         const posts = dbPostData.map((post) => post.get({ plain: true }));
-        res.render('dashboard', { posts, loggedIn: true, username: req.session.username,});       
+        res.render('dashboard', { posts, logged_in: true, username: req.session.username,});       
     })
     .catch((err) => {
         console.log(err);
@@ -48,14 +48,6 @@ router.get('/edit/:id', auth, (req, res) => {
           model: User,
           attributes: ['username'],
         },
-        {
-          model: Comment,
-          attributes: ['id', 'comment', 'postId', 'userId', 'created_at'],
-          include: {
-            model: User,
-            attributes: ['username'],
-          },
-        },
       ],
     })
       .then((dbPostData) => {
@@ -64,7 +56,7 @@ router.get('/edit/:id', auth, (req, res) => {
           return;
         }
         const post = dbPostData.get({ plain: true });
-        res.render('edit-post', { post, loggedIn: true, username: req.session.username });         
+        res.render('edit-post', { post, logged_in: true, username: req.session.username });         
       })
       .catch((err) => {
         console.log(err);

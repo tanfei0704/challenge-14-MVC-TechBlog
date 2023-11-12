@@ -8,10 +8,11 @@ async function logout() {
   });
 
   if (response.ok) {
-    document.location.replace('/login');
+    document.location.replace('/');
+    alert('You are logged out!')
   } else {
-    alert(response.statusText);
+    alert('Fail to log out');
   }
 }
 
-document.querySelector('#logout').addEventListener('click', logout);
+document.querySelector('.logout').addEventListener('click', logout);

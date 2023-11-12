@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { User } = require('../../models');
+const auth = require('../../utils/auth');
 
 // Endpoint: http://localhost:3001/api/users/
 // CREATE new user
@@ -57,15 +58,18 @@ router.post('/login', async (req, res) => {
 });
 
 // logout user Endpoint: http://localhost:3001/api/users/logout
-router.post('/logout', (req, res) => {
-    if (req.session.logged_in) {
-      req.session.destroy(() => {
-        res.status(204).end();
-      });
-    } else {
-      res.status(404).end();
+router.post('/logout', auth, async (req, res) => {
+    try {
+        if (req.session.logged_in) {
+            await req.session.destroy(() => {
+                res.status(204).end();
+            });
+        } else {
+            res.status(404).end();
+        }
+    } catch {
+        res.status(400).end();
     }
-  });
-
+});
 
 module.exports = router;
