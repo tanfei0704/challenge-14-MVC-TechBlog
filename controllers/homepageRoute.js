@@ -45,6 +45,7 @@ router.get('/signup', (req, res) => {
     res.render('signup');
 });
 
+
 router.get('/dashboard', auth, async (req, res) => {
     try {
       // Find the logged in user based on the session ID
