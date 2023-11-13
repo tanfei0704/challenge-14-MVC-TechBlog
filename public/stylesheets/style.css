@@ -159,13 +159,13 @@ p {
 /* CARDS */
 
 .card {
-    margin: 0 0 20px 0;
+    margin: 20px;
     border: 2px solid var(--dark);
     border-radius: var(--border-radius);
 }
 
 .card-header {
-    color: var(--primary);
+    color: white;
     background-color: var(--dark);
     padding: 1%;
     border-radius: calc(.18rem - 1px) calc(.18rem - 1px) 0 0;
@@ -181,6 +181,7 @@ p {
     padding: 1%;
     border-radius: calc(.18rem - 1px) calc(.18rem - 1px) 0 0;
 }
+
 
 h4 {
     font-weight: 700;
@@ -212,5 +213,5 @@ footer {
 }
 
 .form-input {
-    padding: 7px;
+    padding: 10px;
 }
